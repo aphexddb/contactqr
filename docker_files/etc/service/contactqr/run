@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -e
+
+exec /opt/release/contactqr-${VERSION}-linux-amd64 -path /opt/ui
