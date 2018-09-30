@@ -1,7 +1,18 @@
-DIST=../build/ui
+RELEASE_DIST=../release/ui
 
-all: release
+all: build
+
+.PHONY: dev
+dev:
+	gatsby develop
+
+.PHONY: build
+build:
+	gatsby build
 
 .PHONY: release
-release:
-	mkdir -p $(DIST)
+release: build
+	rm -rf $(RELEASE_DIST)
+	mkdir -p $(RELEASE_DIST)
+	cp -R ./public/* $(RELEASE_DIST)
+
