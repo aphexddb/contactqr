@@ -48,4 +48,4 @@ run:
 	docker run --rm -it \
 		-p 8080:8080/tcp \
 		-e PORT=8080 \
-		$(BINARY):latest
+		$(BINARY):latest $*

@@ -38,7 +38,7 @@ Or run the container:
 
 ```sh
 make docker_build
-docker run --rm -it contactqr:latest
+make run
 ```
 
 To run the UI for development:

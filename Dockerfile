@@ -25,7 +25,7 @@ RUN chmod +x /etc/service/contactqr/run
 EXPOSE ${PORT}
 
 # ui static files
-ADD ./build/ui /opt/ui
+ADD ./release/ui /opt/ui
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
