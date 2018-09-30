@@ -12,7 +12,7 @@ docker run aphexddb/contactqr
 
 And then visit [http://localhost:8080](http://localhost:8080).
 
-## Building
+## Releasing
 
 To build a release update the VERSION file (if needed) and run:
 
@@ -28,21 +28,32 @@ make docker_push
 
 ## Development
 
-For local development you can change the container port as follows:
+To run the server for development:
 
-```sh
-docker run --rm -it -p 8080:8080/tcp -e PORT=8080 contactqr:latest
-```
-
-Otherwise, clone this repo and run it:
-
-```sh
+```bash
 make dev
 ```
 
-### Notes
+Or run the container:
 
-Built using Go 1.11, probably runs on older versions.
+```sh
+make docker_build
+docker run --rm -it contactqr:latest
+```
+
+To run the UI for development:
+
+```bash
+cd ui
+make dev
+```
+
+### Requirements
+
+* UI built with [Gatsby](https://www.gatsbyjs.org/docs/) using npm `5.6.0` and node `v8.11.2`.
+* Server built using Go `1.11`.
+
+### Notes
 
 The `vcard` package treats VCard as immutable by using the functional option pattern to build the vCard and getters to read data. Please feel free to use this package for your project! The tests are also in a seperate `tests` package to validate that private variables are treated appropriately.
 

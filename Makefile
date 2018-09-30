@@ -5,6 +5,7 @@ ENTRYPOINT := cmd/contactqr/contactqr.go
 BINARY_NAME=contactqr
 GOCMD=go
 GOBINDIR := $(GOPATH)/bin
+UIPATH := ./ui/public
 
 all: test build
 
@@ -30,7 +31,8 @@ release: ui
 dev:
 	mkdir -p build
 	go build -o build/$(BINARY)-dev $(ENTRYPOINT)
-	build/$(BINARY)-dev
+	@echo "Expecting UI file path: $(UIPATH), run 'make build' in the ui directory to generate static files."
+	build/$(BINARY)-dev -path $(UIPATH)
 
 .PHONY: docker_build
 docker_build: release

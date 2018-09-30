@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"path/filepath"
 
 	"github.com/aphexddb/contactqr/vcard"
 )
@@ -95,11 +96,17 @@ func NewVCardHandler(w http.ResponseWriter, r *http.Request) {
 	writeVCardResponse(w, vc.String(), "")
 }
 
-// IndexHandler handles index file requests
-func IndexHandler(indexPath string) func(w http.ResponseWriter, r *http.Request) {
-	log.Println("HTML index file is being served from:", indexPath)
+// StaticHTMLHandler handles static html file requests
+func StaticHTMLHandler(filePath string) func(w http.ResponseWriter, r *http.Request) {
 	fn := func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, indexPath)
+
+		// service index.html
+		if r.RequestURI == "/" || r.URL.Path[1:] == "/" {
+			http.ServeFile(w, r, filepath.Join(filePath, "index.html"))
+			return
+		}
+
+		http.ServeFile(w, r, filepath.Join(filePath, r.URL.Path[1:]))
 	}
 
 	return http.HandlerFunc(fn)
