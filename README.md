@@ -48,6 +48,12 @@ cd ui
 make dev
 ```
 
+Create a new vCard via curl
+
+```sh
+curl -d "{\"first\":\"Jane\",\"last\":\"Doe\",\"title\":\"Mushroom Farmer\"}" -H "Content-Type: application/json" -X POST http://localhost:8080/api/v1/vcard/create
+```
+
 ### Requirements
 
 * UI built with [Gatsby](https://www.gatsbyjs.org/docs/) using npm `5.6.0` and node `v8.11.2`.
