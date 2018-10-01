@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -40,24 +41,30 @@ func NewServer(staticPath, indexFile, port string) Server {
 
 	// api routes
 	api := r.PathPrefix("/api/v1").Subrouter()
-	api.Path("/vcard/create").HandlerFunc(NewVCardHandler).Methods(http.MethodPost)
+	api.Path("/vcard/create").HandlerFunc(CreateVCardHandler).Methods(http.MethodPost)
 	api.NotFoundHandler = http.HandlerFunc(NotFoundHandler)
 
-	// log all API requests
+	// API Middleware
 	api.Use(LoggingMiddleware)
+	// api.Use(LocalCorsMiddleware)
 
 	// health check
 	r.HandleFunc("/health", HealthCheckHandler).Methods(http.MethodGet)
 
-	// Catch-all: Serve all static HTML files
+	// catch-all: Serve all static HTML files
 	r.PathPrefix("/").HandlerFunc(StaticHTMLHandler(staticPath)).Methods(http.MethodGet)
+
+	// handle CORS
+	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type"})
+	originsOk := handlers.AllowedOrigins([]string{"*"})
+	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"})
 
 	srv := &http.Server{
 		Addr:         fmt.Sprintf("0.0.0.0:%s", port),
 		WriteTimeout: httpWriteTimeout,
 		ReadTimeout:  httpReadTimeout,
 		IdleTimeout:  httpIdleTimeout,
-		Handler:      r,
+		Handler:      handlers.CORS(originsOk, headersOk, methodsOk)(r),
 	}
 
 	return &contactqrServer{

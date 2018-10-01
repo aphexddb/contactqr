@@ -53,10 +53,8 @@ func writeVCardResponse(w http.ResponseWriter, text, errors string) {
 	w.Write(respBytes)
 }
 
-// NewVCardHandler creates a new VCard
-func NewVCardHandler(w http.ResponseWriter, r *http.Request) {
-	log.Println("New vCard request")
-
+// CreateVCardHandler creates a new VCard
+func CreateVCardHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	var in VCardRequest
@@ -65,6 +63,7 @@ func NewVCardHandler(w http.ResponseWriter, r *http.Request) {
 
 	// validate request
 	if jsonErr != nil {
+		log.Println("Error creating new vCard:", jsonErr.Error())
 		writeVCardResponse(w, "", "Invalid request")
 		return
 	}
@@ -92,6 +91,7 @@ func NewVCardHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Printf("Creating vCard for %s %s\n", vc.First(), vc.Last())
 	w.WriteHeader(http.StatusOK)
 	writeVCardResponse(w, vc.String(), "")
 }
