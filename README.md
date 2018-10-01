@@ -2,7 +2,7 @@
 
 This project creates QR Codes for your contact information that can be read with a modern smartphone. Most phones expect information in a vCard format. For example, iPhones will scan a QR code automatically when the camera is open. Released under the [MIT License](./LICENSE).
 
-The project was inspired by a friend who had one of these QR codes on thier lock screen. This enabled people to simply scan the code instead of sending a text message to exchange contact info.
+The project was inspired by a friend who had one of these QR codes on their lock screen. This enabled people to simply scan the code instead of sending a text message to exchange contact info.
 
 Try it out via Docker:
 
