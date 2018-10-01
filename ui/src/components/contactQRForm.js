@@ -82,7 +82,9 @@ export default class ContactQRForm extends React.Component {
   };
 
   render() {
-    const { first, last, note, vcard_text, error } = this.state;
+    const { first, last, company_name, title, email, cell_phone,
+      street, state, postal_code, facebook_url, twitter_handle,
+      url, note, vcard_text, error } = this.state;
 
     // show error message
     let errorMsg = "";
@@ -117,6 +119,62 @@ export default class ContactQRForm extends React.Component {
             <label>
               Last Name:<br />
               <input type="text" name="last" value={last} onChange={this.handleChange} />
+            </label>
+          </p>
+
+          <p>
+            <label>
+              Company Name:<br />
+              <input type="text" name="company_name" value={company_name} onChange={this.handleChange} />
+            </label>
+          </p>
+
+          <p>
+            <label>
+              Title:<br />
+              <input type="text" name="title" value={title} onChange={this.handleChange} />
+            </label>
+          </p>
+
+          <p>
+            <label>
+              Email:<br />
+              <input type="text" name="email" value={email} onChange={this.handleChange} />
+            </label>
+          </p>
+
+          <p>
+            <label>
+              Cell Phone:<br />
+              <input type="text" name="cell_phone" value={cell_phone} onChange={this.handleChange} />
+            </label>
+          </p>
+
+          <p>
+            <label>
+              Address:<br />
+              TODO
+            </label>
+          </p>
+
+          <p>
+            <label>
+              Facebook Profile URL:<br />
+              <input type="text" name="facebook_url" value={facebook_url} onChange={this.handleChange} />
+            </label>
+          </p>
+
+          <p>
+            <label>
+              Twitter Handle:<br />
+              <input type="text" name="twitter_handle" value={twitter_handle} onChange={this.handleChange} />
+            </label>
+          </p>
+
+          <p>
+            <label>
+              Website URL:<br />
+              <input type="text" name="url" value={url} onChange={this.handleChange} />
             </label>
           </p>
 
