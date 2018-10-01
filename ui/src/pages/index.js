@@ -1,14 +1,15 @@
 import React from 'react'
-import { Link } from 'gatsby'
 
 import Layout from '../components/layout'
+import ContactQRForm from '../components/contactQRForm'
 
 const IndexPage = () => (
   <Layout>
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <Link to="/page-2/">Go to page 2</Link>
+    <p>Show someone a QR Code with your contact information in vCard format instead of sending someone a SMS (<em>because that's just too much work</em>).
+    More info at <a href="https://github.com/aphexddb/contactqr">https://github.com/aphexddb/contactqr</a>.</p>
+
+    <ContactQRForm/>
+
   </Layout>
 )
 

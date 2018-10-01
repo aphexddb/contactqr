@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: 'Gatsby Default Starter',
+    title: 'Contact QR',
   },
   plugins: [
     'gatsby-plugin-react-helmet',
@@ -10,10 +10,10 @@ module.exports = {
         name: 'gatsby-starter-default',
         short_name: 'starter',
         start_url: '/',
-        background_color: '#663399',
-        theme_color: '#663399',
+        background_color: '#38a5fe',
+        theme_color: '#38a5fe',
         display: 'minimal-ui',
-        icon: 'src/images/gatsby-icon.png', // This path is relative to the root of the site.
+        icon: 'src/images/favicon-contact.png', // This path is relative to the root of the site.
       },
     },
     'gatsby-plugin-offline',
