@@ -239,6 +239,11 @@ func Email(email string) func(*VCard) {
 // CellPhone sets the cell phone on a vCard
 func CellPhone(number string) func(*VCard) {
 	return func(vc *VCard) {
+		// ignore blank number
+		if len(number) == 0 {
+			return
+		}
+
 		formattedNumber, err := phone.ParsePhoneE164(number)
 		if err != nil {
 			vc.invalidFields = append(vc.invalidFields, err.Error())
@@ -251,6 +256,11 @@ func CellPhone(number string) func(*VCard) {
 // HomeAddress sets the home address on a vCard
 func HomeAddress(address Address) func(*VCard) {
 	return func(vc *VCard) {
+		// ignore empty address
+		if len(address.Street) == 0 {
+			return
+		}
+
 		formattedAddress, err := address.Format()
 		if err != nil {
 			vc.invalidFields = append(vc.invalidFields, err.Error())

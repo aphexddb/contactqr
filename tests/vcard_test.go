@@ -96,9 +96,23 @@ func TestVCardRequiredFields(t *testing.T) {
 	_, err := vcard.New(
 		vcard.First(""),
 		vcard.Last(""),
+		vcard.Org(""),
+		vcard.Title(""),
+		vcard.Email(""),
+		vcard.CellPhone(""),
+		vcard.HomeAddress(vcard.Address{
+			Street:     "",
+			City:       "",
+			State:      "",
+			PostalCode: "",
+		}),
+		vcard.FacebookProfileURL(""),
+		vcard.TwitterHandle(""),
+		vcard.URL(""),
+		vcard.Note(""),
 	)
 
-	assert.NotNil(t, err)
+	assert.Equal(t, "You need a name", err.Error())
 }
 
 func TestVCardFormatString(t *testing.T) {
