@@ -46,7 +46,6 @@ func NewServer(staticPath, indexFile, port string) Server {
 
 	// API Middleware
 	api.Use(LoggingMiddleware)
-	// api.Use(LocalCorsMiddleware)
 
 	// health check
 	r.HandleFunc("/health", HealthCheckHandler).Methods(http.MethodGet)
