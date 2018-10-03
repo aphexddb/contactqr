@@ -26,8 +26,5 @@ ARG PORT
 ENV PORT=${PORT}
 EXPOSE ${PORT}
 
-# ui static files
-ADD ./release/ui /opt/ui
-
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
