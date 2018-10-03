@@ -3,27 +3,34 @@ RELEASE_OS=linux
 BINARY := contactqr
 ENTRYPOINT := cmd/contactqr/contactqr.go
 BINARY_NAME=contactqr
+PORT := 8080
 GOCMD=go
 GOBINDIR := $(GOPATH)/bin
 UIPATH := ./ui/public
 
 all: test build
 
-.PHONY: ui
-ui:
-	cd ui && make release
-
 .PHONY: build
 build: test
 	mkdir -p build
 	$(GOCMD) build -o build/$(BINARY_NAME)
+
+.PHONY: clean
+clean:
+	rm -rf ./build
+	rm -rf ./release
+	cd ui && make clean
+
+.PHONY: release_ui
+release_ui:
+	cd ui && make release
 
 .PHONY: test
 test:
 	$(GOCMD) test ./...
 
 .PHONY: release
-release: ui
+release: release_ui
 	mkdir -p release
 	GOOS=$(RELEASE_OS) GOARCH=amd64 go build -o release/$(BINARY)-$(VERSION)-$(RELEASE_OS)-amd64 $(ENTRYPOINT)
 
@@ -36,11 +43,11 @@ dev:
 
 .PHONY: docker_build
 docker_build: release
-	docker build --build-arg VERSION=$(VERSION) -t $(BINARY):$(VERSION) .
+	docker build --build-arg VERSION=$(VERSION) --build-arg PORT=$(PORT) -t $(BINARY):$(VERSION) .
 	docker tag $(BINARY):$(VERSION) $(BINARY):latest
 
 .PHONY: docker_release
-docker_release:
+docker_release: 
 	docker tag $(BINARY):$(VERSION) aphexddb/contactqr:$(VERSION)
 	docker push aphexddb/contactqr:$(VERSION)
 	docker tag $(BINARY):$(VERSION) aphexddb/contactqr:latest
@@ -49,6 +56,6 @@ docker_release:
 .PHONY: run
 run:
 	docker run --rm -it \
-		-p 8080:8080/tcp \
-		-e PORT=8080 \
+		-p $(PORT):$(PORT)/tcp \
+		-e PORT=$(PORT) \
 		$(BINARY):latest $*

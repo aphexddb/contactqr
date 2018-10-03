@@ -22,6 +22,8 @@ ENV VERSION=${VERSION}
 ADD ./release /opt/release
 RUN chmod +x /opt/release/contactqr-${VERSION}-linux-amd64
 RUN chmod +x /etc/service/contactqr/run
+ARG PORT
+ENV PORT=${PORT}
 EXPOSE ${PORT}
 
 # ui static files

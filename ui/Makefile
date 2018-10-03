@@ -1,6 +1,12 @@
+PUBLIC=./public
 RELEASE_DIST=../release/ui
 
 all: build
+
+.PHONY: clean
+clean:
+	rm -rf $(PUBLIC)
+	rm -rf $(RELEASE_DIST)
 
 .PHONY: dev
 dev:
@@ -14,5 +20,5 @@ build:
 release: build
 	rm -rf $(RELEASE_DIST)
 	mkdir -p $(RELEASE_DIST)
-	cp -R ./public/* $(RELEASE_DIST)
+	cp -R $(PUBLIC)/* $(RELEASE_DIST)
 
