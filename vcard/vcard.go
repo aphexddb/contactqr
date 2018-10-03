@@ -187,25 +187,43 @@ func (vc *VCard) generate() string {
 	buffer.WriteString(fmt.Sprintf("VERSION:%s\n", vCardVersion))
 	buffer.WriteString(fmt.Sprintf("N:%s;%s;;;\n", vc.last, vc.first))
 	buffer.WriteString(fmt.Sprintf("FN:%s %s\n", vc.first, vc.last))
-	buffer.WriteString(fmt.Sprintf("ORG:%s;\n", vc.org))
-	buffer.WriteString(fmt.Sprintf("TITLE:%s\n", vc.title))
+	if len(vc.org) > 0 {
+		buffer.WriteString(fmt.Sprintf("ORG:%s;\n", vc.org))
+	}
+	if len(vc.title) > 0 {
+		buffer.WriteString(fmt.Sprintf("TITLE:%s\n", vc.title))
+	}
 	// ROLE:Executive
-	buffer.WriteString(fmt.Sprintf("EMAIL;PREF=1;TYPE=home:%s\n", vc.email))
+	if len(vc.email) > 0 {
+		buffer.WriteString(fmt.Sprintf("EMAIL;PREF=1;TYPE=home:%s\n", vc.email))
+	}
 	// EMAIL;PREF=2;TYPE=work:foo@bar.com
-	buffer.WriteString(fmt.Sprintf("TEL;type=CELL:%s\n", vc.cellPhone))
+	if len(vc.cellPhone) > 0 {
+		buffer.WriteString(fmt.Sprintf("TEL;type=CELL:%s\n", vc.cellPhone))
+	}
 	// TEL;PREF=2;TYPE=work:(123) 123-1234
 	// TEL;VALUE=uri;PREF=3:tel:1234567890
-	buffer.WriteString(fmt.Sprintf("ADR;PREF=1;TYPE=home:;;%s\n", vc.homeAddress))
+	if len(vc.homeAddress) > 0 {
+		buffer.WriteString(fmt.Sprintf("ADR;PREF=1;TYPE=home:;;%s\n", vc.homeAddress))
+	}
 	// ADR;PREF=2;TYPE=work:;;123 Forbes Ave\, Apt 1;San Francisco;CA;12345;USA
-	buffer.WriteString(fmt.Sprintf("X-SOCIALPROFILE;PREF=1;TYPE=facebook:%s\n", vc.facebookProfileURL))
-	buffer.WriteString(fmt.Sprintf("X-SOCIALPROFILE;PREF=2;TYPE=twitter;x-user=%s:x-apple:%s\n", vc.twitterHandle, vc.twitterHandle))
-	buffer.WriteString(fmt.Sprintf("URL;PREF=1;TYPE=internet:%s\n", vc.url))
+	if len(vc.facebookProfileURL) > 0 {
+		buffer.WriteString(fmt.Sprintf("X-SOCIALPROFILE;PREF=1;TYPE=facebook:%s\n", vc.facebookProfileURL))
+	}
+	if len(vc.twitterHandle) > 0 {
+		buffer.WriteString(fmt.Sprintf("X-SOCIALPROFILE;PREF=2;TYPE=twitter;x-user=%s:x-apple:%s\n", vc.twitterHandle, vc.twitterHandle))
+	}
+	if len(vc.url) > 0 {
+		buffer.WriteString(fmt.Sprintf("URL;PREF=1;TYPE=internet:%s\n", vc.url))
+	}
 	// URL;PREF=2;TYPE=personal:http://www.johndoe.com
 	// PHOTO;PREF=1;TYPE=work:https://upload.wikimedia.org/wikipedia/en/8/80/Wikipedia-logo-v2.svg
-	// PHOTO;PREF=2;TYPE=home:data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAABlBMVEUAAAD///+l2Z/dAAAAM0lEQVR4nGP4/5/h/1+G/58ZDrAz3D/McH8yw83NDDeNGe4Ug9C9zwz3gVLMDA/A6P9/AFGGFyjOXZtQAAAAAElFTkSuQmCC
+	// PHOTO;PREF=2;TYPE=home:data:image/png;base64,iVBORw0KGgo....
 	// BDAY:20000131
 	// GENDER:M
-	buffer.WriteString(fmt.Sprintf("NOTE;PREF=1:%s\n", vc.note))
+	if len(vc.note) > 0 {
+		buffer.WriteString(fmt.Sprintf("NOTE;PREF=1:%s\n", vc.note))
+	}
 	// NOTE;PREF=2:Another note.
 	buffer.WriteString("END:VCARD")
 
