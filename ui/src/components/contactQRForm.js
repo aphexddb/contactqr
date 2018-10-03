@@ -65,9 +65,7 @@ export default class ContactQRForm extends React.Component {
       note: this.state.note
     };
 
-    // TODO: remote localhost
-    console.log("TODO: remote localhost");
-    axios.post('http://localhost:8080/api/v1/vcard/create', vCardRequest)
+    axios.post('/api/v1/vcard/create', vCardRequest)
       .then(response => {
         const vCardResponse = newVCardResponse(response.data);
         if (vCardResponse.success) {
