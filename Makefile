@@ -41,7 +41,10 @@ docker_build: release
 
 .PHONY: docker_release
 docker_release:
-	docker push $(BINARY):$(VERSION) CHANGEME_REPO.here
+	docker tag $(BINARY):$(VERSION) aphexddb/contactqr:$(VERSION)
+	docker push aphexddb/contactqr:$(VERSION)
+	docker tag $(BINARY):$(VERSION) aphexddb/contactqr:latest
+	docker push aphexddb/contactqr:latest
 
 .PHONY: run
 run:
