@@ -30,6 +30,7 @@ type VCard struct {
 	url                string
 	note               string
 	invalidFields      []string
+	vCardValue         string
 }
 
 // Option defines a functional option for VCard
@@ -166,9 +167,19 @@ func (vc *VCard) Note() string {
 	return vc.note
 }
 
+// QRCode returns a QRCode in Base64
+func (vc *VCard) QRCode(width, height int) string {
+	return TextToBase64QRCodeImage(vc.vCardValue, width, height)
+}
+
 // String implements to string for VCard
-// TODO: fully implement remaining fields in the vCard RFC
 func (vc *VCard) String() string {
+	return vc.vCardValue
+}
+
+// generate creates the vcard value
+// TODO: fully implement remaining fields in the vCard RFC
+func (vc *VCard) generate() string {
 	var buffer bytes.Buffer
 
 	// Write each line of the vcard as defined in RFC6350 (https://tools.ietf.org/html/rfc6350).
@@ -323,6 +334,8 @@ func New(builders ...Option) (*VCard, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	vcard.vCardValue = vcard.generate()
 
 	return vcard, nil
 }

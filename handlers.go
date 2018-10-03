@@ -33,14 +33,16 @@ type VCardResponse struct {
 	Success   bool   `json:"success"`
 	Errors    string `json:"errors"`
 	VCardText string `json:"vcard_text"`
+	PngBase64 string `json:"png_base64"`
 }
 
 // writeVCardResponse writes a response to vcard actions
-func writeVCardResponse(w http.ResponseWriter, text, errors string) {
+func writeVCardResponse(w http.ResponseWriter, text, errors, pngBase64 string) {
 	resp := VCardResponse{
 		Success:   true,
 		Errors:    errors,
 		VCardText: text,
+		PngBase64: pngBase64,
 	}
 
 	if len(errors) > 0 {
@@ -64,7 +66,7 @@ func CreateVCardHandler(w http.ResponseWriter, r *http.Request) {
 	// validate request
 	if jsonErr != nil {
 		log.Println("Error creating new vCard:", jsonErr.Error())
-		writeVCardResponse(w, "", "Invalid request")
+		writeVCardResponse(w, "", "Invalid request", "")
 		return
 	}
 
@@ -87,13 +89,13 @@ func CreateVCardHandler(w http.ResponseWriter, r *http.Request) {
 		vcard.Note(in.Note),
 	)
 	if vcErr != nil {
-		writeVCardResponse(w, "", vcErr.Error())
+		writeVCardResponse(w, "", vcErr.Error(), "")
 		return
 	}
 
 	log.Printf("Creating vCard for %s %s\n", vc.First(), vc.Last())
 	w.WriteHeader(http.StatusOK)
-	writeVCardResponse(w, vc.String(), "")
+	writeVCardResponse(w, vc.String(), "", vc.QRCode(200, 200))
 }
 
 // StaticHTMLHandler handles static html file requests

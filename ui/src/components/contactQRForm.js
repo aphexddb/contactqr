@@ -6,10 +6,12 @@ function newVCardResponse(data) {
   if (data === undefined) {
     return null;
   }
+
   return {
     success: data.success,
     errors: data.errors,
-    vcard_text: data.vcard_text
+    vcard_text: data.vcard_text,
+    png_base64: data.png_base64
   };
 }
 
@@ -32,6 +34,7 @@ export default class ContactQRForm extends React.Component {
       note: "",
       vcard_text: "",
       error: "",
+      png_base64: "",
     };
   }
 
@@ -43,6 +46,7 @@ export default class ContactQRForm extends React.Component {
     e.preventDefault();
     this.setState({vcard_text: ""});
     this.setState({error: ""});
+    this.setState({png_base64: ""});
 
     // create a VCardRequest request object from the form
     const vCardRequest = {
@@ -68,6 +72,7 @@ export default class ContactQRForm extends React.Component {
         const vCardResponse = newVCardResponse(response.data);
         if (vCardResponse.success) {
           this.setState({vcard_text: vCardResponse.vcard_text});
+          this.setState({png_base64: vCardResponse.png_base64});
         } else {
           this.setState({error: vCardResponse.errors});
         }
@@ -75,6 +80,7 @@ export default class ContactQRForm extends React.Component {
         const vCardResponse = newVCardResponse(error.response.data);
         if (vCardResponse.success) {
           this.setState({vcard_text: vCardResponse.vcard_text});
+          this.setState({png_base64: vCardResponse.png_base64});
         } else {
           this.setState({error: vCardResponse.errors});
         }
@@ -84,9 +90,9 @@ export default class ContactQRForm extends React.Component {
   render() {
     const { first, last, company_name, title, email, cell_phone,
       street, state, postal_code, facebook_url, twitter_handle,
-      url, note, vcard_text, error } = this.state;
+      url, note, vcard_text, error, png_base64 } = this.state;
 
-    // show error message
+      // show error message
     let errorMsg = "";
     if (error.length) {
       errorMsg =
@@ -95,9 +101,18 @@ export default class ContactQRForm extends React.Component {
       </span>;
     }
 
+    // show the QR Code image
+    let qrCode = "";
+    if (png_base64.length > 0) {
+      qrCode =
+      <div>
+        <img src={png_base64} alt="QR Code" />
+      </div>;
+    }
+
     // show the raw vCard text
     let vCardRawText = "";
-    if (vcard_text.length) {
+    if (vcard_text.length > 0) {
       vCardRawText =
       <div>
         <p>vCard data in <a href="https://tools.ietf.org/html/rfc6350">RFC 6350</a> format:</p>
@@ -190,7 +205,7 @@ export default class ContactQRForm extends React.Component {
             {errorMsg}
           </p>
         </form>
-
+        {qrCode}
         {vCardRawText}
       </div>
     );
