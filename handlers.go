@@ -99,12 +99,12 @@ func CreateVCardHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // StaticHTMLHandler handles static html file requests
-func StaticHTMLHandler(filePath string) func(w http.ResponseWriter, r *http.Request) {
+func StaticHTMLHandler(filePath, indexFile string) func(w http.ResponseWriter, r *http.Request) {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 
 		// service index.html
 		if r.RequestURI == "/" || r.URL.Path[1:] == "/" {
-			http.ServeFile(w, r, filepath.Join(filePath, "index.html"))
+			http.ServeFile(w, r, filepath.Join(filePath, indexFile))
 			return
 		}
 

@@ -51,7 +51,7 @@ func NewServer(staticPath, indexFile, port string) Server {
 	r.HandleFunc("/health", HealthCheckHandler).Methods(http.MethodGet)
 
 	// catch-all: Serve all static HTML files
-	r.PathPrefix("/").HandlerFunc(StaticHTMLHandler(staticPath)).Methods(http.MethodGet)
+	r.PathPrefix("/").HandlerFunc(StaticHTMLHandler(staticPath, indexFile)).Methods(http.MethodGet)
 
 	// handle CORS
 	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type"})

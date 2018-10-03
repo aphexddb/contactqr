@@ -16,9 +16,9 @@ func main() {
 	var port string
 
 	// service flags
-	flag.StringVar(&staticPath, "path", "./dist/static", "The directory to serve static files from")
-	flag.StringVar(&indexFile, "index", "index.html", "The http index file to serve")
-	flag.StringVar(&port, "port", "8080", "HTTP `port`")
+	flag.StringVar(&staticPath, "path", "./ui/public", "Path to serve UI static HTML files from")
+	flag.StringVar(&indexFile, "index", "index.html", "HTML index file")
+	flag.StringVar(&port, "port", "8080", "HTTP service port")
 	flag.Parse()
 
 	// create the server
