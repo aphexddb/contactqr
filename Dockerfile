@@ -16,15 +16,17 @@ RUN apt-get install -y jq curl wget
 # add all docker files
 ADD ./docker_files /
 
-# contactqr service
+# service version configured at build time
 ARG VERSION
 ENV VERSION=${VERSION}
 ADD ./release /opt/release
 RUN chmod +x /opt/release/contactqr-${VERSION}-linux-amd64
 RUN chmod +x /etc/service/contactqr/run
+
+# service port default configured at build time, can be overriden wuth ENV value
 ARG PORT
 ENV PORT=${PORT}
 EXPOSE ${PORT}
 
-# Clean up APT when done.
+# Clean up APT when done
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
