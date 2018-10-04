@@ -42,16 +42,23 @@ dev:
 	build/$(BINARY)-dev -path $(UIPATH)
 
 .PHONY: docker_build
-docker_build: release
+docker_build:
 	docker build --build-arg VERSION=$(VERSION) --build-arg PORT=$(PORT) -t $(BINARY):$(VERSION) .
 	docker tag $(BINARY):$(VERSION) $(BINARY):latest
 
 .PHONY: docker_release
-docker_release: 
-	docker tag $(BINARY):$(VERSION) aphexddb/contactqr:$(VERSION)
-	docker push aphexddb/contactqr:$(VERSION)
-	docker tag $(BINARY):$(VERSION) aphexddb/contactqr:latest
-	docker push aphexddb/contactqr:latest
+docker_release:
+	docker tag $(BINARY):$(VERSION) docker.io/aphexddb/contactqr:$(VERSION)
+	docker push docker.io/aphexddb/contactqr:$(VERSION)
+	docker tag $(BINARY):$(VERSION) docker.io/aphexddb/contactqr:latest
+	docker push docker.io/aphexddb/contactqr:latest
+
+.PHONY: heroku_release
+heroku_release:
+	# docker tag $(BINARY):$(VERSION) registry.heroku.com/contactqrme/web
+	# docker push registry.heroku.com/contactqrme/web
+	heroku container:push web --arg VERSION=$(VERSION),PORT=$(PORT)
+	heroku container:release web
 
 .PHONY: run
 run:

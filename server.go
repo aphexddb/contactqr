@@ -35,7 +35,7 @@ type contactqrServer struct {
 
 // NewServer creates a new server
 func NewServer(staticPath, indexFile, port string) Server {
-	log.Printf("Server config -> path: %s, index: %s, port: %s\n", staticPath, indexFile, port)
+	log.Printf("Config -> path: %s, index: %s, port: %s\n", staticPath, indexFile, port)
 
 	r := mux.NewRouter()
 
@@ -74,7 +74,7 @@ func NewServer(staticPath, indexFile, port string) Server {
 
 // Start starts the http server
 func (s *contactqrServer) Start() error {
-	log.Println("HTTP server listening on port", s.port)
+	log.Println("HTTP server starting on port", s.port)
 	return s.httpServer.ListenAndServe()
 }
 
