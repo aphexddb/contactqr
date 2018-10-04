@@ -1,5 +1,7 @@
-import React from 'react'
+import React from 'react';
 import axios from 'axios';
+import QRCodeImage from './QRCodeImage.js';
+import RawVCard from './RawVCard.js';
 
 // parses response data into a VCardResponse
 function newVCardResponse(data) {
@@ -42,6 +44,16 @@ export default class ContactQRForm extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  handleResponseData = (data) => {
+    const vCardResponse = newVCardResponse(data);
+    if (vCardResponse.success) {
+      this.setState({vcard_text: vCardResponse.vcard_text});
+      this.setState({png_base64: vCardResponse.png_base64});
+    } else {
+      this.setState({error: vCardResponse.errors});
+    }
+  };
+
   onSubmit = (e) => {
     e.preventDefault();
     this.setState({vcard_text: ""});
@@ -65,23 +77,12 @@ export default class ContactQRForm extends React.Component {
       note: this.state.note
     };
 
-    axios.post('/api/v1/vcard/create', vCardRequest)
+    const handleResponseData = this.handleResponseData;
+    axios.post('http://localhost:8080/api/v1/vcard/create', vCardRequest)
       .then(response => {
-        const vCardResponse = newVCardResponse(response.data);
-        if (vCardResponse.success) {
-          this.setState({vcard_text: vCardResponse.vcard_text});
-          this.setState({png_base64: vCardResponse.png_base64});
-        } else {
-          this.setState({error: vCardResponse.errors});
-        }
+        handleResponseData(response.data);
       }).catch(error => {
-        const vCardResponse = newVCardResponse(error.response.data);
-        if (vCardResponse.success) {
-          this.setState({vcard_text: vCardResponse.vcard_text});
-          this.setState({png_base64: vCardResponse.png_base64});
-        } else {
-          this.setState({error: vCardResponse.errors});
-        }
+        handleResponseData(error.response.data);
       });
   };
 
@@ -102,20 +103,13 @@ export default class ContactQRForm extends React.Component {
     // show the QR Code image
     let qrCode = "";
     if (png_base64.length > 0) {
-      qrCode =
-      <div>
-        <img src={png_base64} alt="QR Code" />
-      </div>;
+      qrCode = <QRCodeImage png_base64={png_base64} />
     }
 
     // show the raw vCard text
     let vCardRawText = "";
     if (vcard_text.length > 0) {
-      vCardRawText =
-      <div>
-        <p>vCard data in <a href="https://tools.ietf.org/html/rfc6350">RFC 6350</a> format:</p>
-        <pre>{vcard_text}</pre>
-      </div>;
+      vCardRawText = <RawVCard vcard_text={vcard_text} />
     }
 
     return (
