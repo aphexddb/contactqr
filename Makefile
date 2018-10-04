@@ -55,8 +55,6 @@ docker_release:
 
 .PHONY: heroku_release
 heroku_release:
-	# docker tag $(BINARY):$(VERSION) registry.heroku.com/contactqrme/web
-	# docker push registry.heroku.com/contactqrme/web
 	heroku container:push web --arg VERSION=$(VERSION),PORT=$(PORT)
 	heroku container:release web
 
