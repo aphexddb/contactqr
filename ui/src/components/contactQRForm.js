@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import './formLayout.css';
 import QRCodeImage from './QRCodeImage.js';
 import RawVCard from './RawVCard.js';
 
@@ -28,6 +29,7 @@ export default class ContactQRForm extends React.Component {
       email: "",
       cell_phone: "",
       street: "",
+      city: "",
       state: "",
       postal_code: "",
       facebook_url: "",
@@ -69,6 +71,7 @@ export default class ContactQRForm extends React.Component {
       email: this.state.email,
       cell_phone: this.state.cell_phone,
       street: this.state.street,
+      city: this.state.city,
       state: this.state.state,
       postal_code: this.state.postal_code,
       facebook_url: this.state.facebook_url,
@@ -78,26 +81,27 @@ export default class ContactQRForm extends React.Component {
     };
 
     const handleResponseData = this.handleResponseData;
-    axios.post('/api/v1/vcard/create', vCardRequest)
+    axios.post('http://localhost:8080/api/v1/vcard/create', vCardRequest)
       .then(response => {
         handleResponseData(response.data);
       }).catch(error => {
+        console.log("error:", error);
         handleResponseData(error.response.data);
       });
   };
 
   render() {
     const { first, last, company_name, title, email, cell_phone,
-      street, state, postal_code, facebook_url, twitter_handle,
+      street, city, state, postal_code, facebook_url, twitter_handle,
       url, note, vcard_text, error, png_base64 } = this.state;
 
       // show error message
     let errorMsg = "";
     if (error.length) {
       errorMsg =
-      <span>
-        <br/>{error}
-      </span>;
+      <div className="alert alert-warning" role="alert">
+        {error}
+      </div>;
     }
 
     // show the QR Code image
@@ -113,90 +117,85 @@ export default class ContactQRForm extends React.Component {
     }
 
     return (
-      <div>
-         <form name="contactQRForm" onSubmit={this.onSubmit}>
-          <p>
-            <label>
-              First Name:<br />
-              <input type="text" name="first" value={first} onChange={this.handleChange} />
-            </label>
-          </p>
+      <div id="container">
+        <form name="contactQRForm" onSubmit={this.onSubmit} className="needs-validation" noValidate>
 
-          <p>
-            <label>
-              Last Name:<br />
-              <input type="text" name="last" value={last} onChange={this.handleChange} />
-            </label>
-          </p>
+          <div className="form-row">
+            <div className="col-md-3 mb-3">
+              <label htmlFor="first">First name</label>
+              <input type="text" className="form-control" placeholder="David" name="first" value={first} onChange={this.handleChange} />
+            </div>
+            <div className="col-md-3 mb-3">
+              <label htmlFor="last">Last name</label>
+              <input type="text" className="form-control" placeholder="Bowie" name="last" value={last} onChange={this.handleChange} />
+            </div>
+            <div className="col-md-4 mb-3">
+              <label htmlFor="email">Email</label>
+              <input type="text" className="form-control" placeholder="dbowie@anothercastle.com" name="email" value={email} onChange={this.handleChange} />
+            </div>
+            <div className="col-md-2 mb-3">
+              <label htmlFor="cell_phone">Cell Phone</label>
+              <input type="text" className="form-control" placeholder="314-222-1234" name="cell_phone" value={cell_phone} onChange={this.handleChange} />
+            </div>
+          </div>
 
-          <p>
-            <label>
-              Company Name:<br />
-              <input type="text" name="company_name" value={company_name} onChange={this.handleChange} />
-            </label>
-          </p>
+          <div className="form-row">
+            <div className="col-md-3 mb-3">
+              <label htmlFor="company_name">Company name</label>
+              <input type="text" className="form-control" placeholder="Another Castle Games" name="company_name" value={company_name} onChange={this.handleChange} />
+            </div>
+            <div className="col-md-3 mb-3">
+              <label htmlFor="title">Title</label>
+              <input type="text" className="form-control" placeholder="Mushroom Farmer" name="title" value={title} onChange={this.handleChange} />
+            </div>
+            <div className="col-md-2 mb-3">
+              <label htmlFor="twitter_handle">Twitter</label>
+              <div className="input-group">
+                <div className="input-group-prepend">
+                  <span className="input-group-text" id="inputGroupPrepend">@</span>
+                </div>
+                <input type="text" className="form-control" placeholder="star" name="twitter_handle" value={twitter_handle} onChange={this.handleChange} />
+              </div>
+            </div>
+            <div className="col-md-4 mb-3">
+              <label htmlFor="facebook_url">Facebook URL</label>
+              <input type="text" className="form-control" placeholder="https://www.facebook.com/dbowie" name="facebook_url" value={facebook_url} onChange={this.handleChange} />
+            </div>
+          </div>
 
-          <p>
-            <label>
-              Title:<br />
-              <input type="text" name="title" value={title} onChange={this.handleChange} />
-            </label>
-          </p>
+          <div className="form-row">
+            <div className="col-md-12 mb-12">
+              <label>Address</label>
+            </div>
+            <div className="col-md-4 mb-3">
+              <input type="text" className="form-control" placeholder="350 Fifth Avenue" name="street" value={street} onChange={this.handleChange} />
+            </div>
+            <div className="col-md-4 mb-3">
+              <input type="text" className="form-control" placeholder="New York" name="city" value={city} onChange={this.handleChange} />
+            </div>
+            <div className="col-md-2 mb-3">
+              <input type="text" className="form-control" placeholder="NY" name="state" value={state} onChange={this.handleChange} />
+            </div>
+            <div className="col-md-2 mb-3">
+              <input type="text" className="form-control" placeholder="10118" name="postal_code" value={postal_code} onChange={this.handleChange} />
+            </div>
+          </div>
 
-          <p>
-            <label>
-              Email:<br />
-              <input type="text" name="email" value={email} onChange={this.handleChange} />
-            </label>
-          </p>
+          <div className="form-row">
+            <div className="col-md-4 mb-3">
+              <label htmlFor="url">Website URL</label>
+              <input type="text" className="form-control" placeholder="https://www.anothercastle.com" name="url" value={url} onChange={this.handleChange} />
+            </div>
+            <div className="col-md-8 mb-3">
+              <label htmlFor="note">Note</label>
+              <input type="text" className="form-control" placeholder="" name="note" value={note} onChange={this.handleChange} />
+            </div>
+          </div>
 
-          <p>
-            <label>
-              Cell Phone:<br />
-              <input type="text" name="cell_phone" value={cell_phone} onChange={this.handleChange} />
-            </label>
-          </p>
-
-          <p>
-            <label>
-              Address:<br />
-              TODO
-            </label>
-          </p>
-
-          <p>
-            <label>
-              Facebook Profile URL:<br />
-              <input type="text" name="facebook_url" value={facebook_url} onChange={this.handleChange} />
-            </label>
-          </p>
-
-          <p>
-            <label>
-              Twitter Handle:<br />
-              <input type="text" name="twitter_handle" value={twitter_handle} onChange={this.handleChange} />
-            </label>
-          </p>
-
-          <p>
-            <label>
-              Website URL:<br />
-              <input type="text" name="url" value={url} onChange={this.handleChange} />
-            </label>
-          </p>
-
-          <p>
-            <label>
-              Note:<br />
-              <textarea name="note" value={note} onChange={this.handleChange} />
-            </label>
-          </p>
-
-          <p>
-            <button type="submit">Create QR Code</button>
-            {errorMsg}
-          </p>
+          <button className="btn btn-primary" type="submit">Create QR Code</button>
+          {errorMsg}
         </form>
+
         {qrCode}
         {vCardRawText}
       </div>
