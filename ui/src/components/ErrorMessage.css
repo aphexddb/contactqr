@@ -1,0 +1,12 @@
+.error-component {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  opacity: 0;
+  visibility: hidden;
+
+}
+.error-component.show {
+  opacity: 1;
+  visibility: visible;
+}

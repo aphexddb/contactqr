@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import './formLayout.css';
-import QRCodeImage from './QRCodeImage.js';
-import RawVCard from './RawVCard.js';
+import './ContactQRForm.css';
+import VCardQRCode from './VCardQRCode';
+import ErrorMessage from './ErrorMessage';
 
 // parses response data into a VCardResponse
 function newVCardResponse(data) {
@@ -81,7 +81,7 @@ export default class ContactQRForm extends React.Component {
     };
 
     const handleResponseData = this.handleResponseData;
-    axios.post('http://localhost:8080/api/v1/vcard/create', vCardRequest)
+    axios.post('/api/v1/vcard/create', vCardRequest)
       .then(response => {
         handleResponseData(response.data);
       }).catch(error => {
@@ -91,34 +91,26 @@ export default class ContactQRForm extends React.Component {
   };
 
   render() {
+    const componentClasses = ['contactqr-form-component'];
     const { first, last, company_name, title, email, cell_phone,
       street, city, state, postal_code, facebook_url, twitter_handle,
       url, note, vcard_text, error, png_base64 } = this.state;
 
       // show error message
-    let errorMsg = "";
+    let showError = false;
     if (error.length) {
-      errorMsg =
-      <div className="alert alert-warning" role="alert">
-        {error}
-      </div>;
+      showError = true;
     }
 
-    // show the QR Code image
-    let qrCode = "";
+    // show the vCard and QR Code
+    let showData = false;
     if (png_base64.length > 0) {
-      qrCode = <QRCodeImage png_base64={png_base64} />
-    }
-
-    // show the raw vCard text
-    let vCardRawText = "";
-    if (vcard_text.length > 0) {
-      vCardRawText = <RawVCard vcard_text={vcard_text} />
+      showData = true;
     }
 
     return (
-      <div id="container">
-        <form name="contactQRForm" onSubmit={this.onSubmit} className="needs-validation" noValidate>
+      <div className={componentClasses.join(' ')}>
+        <form name="contactQRForm" onSubmit={this.onSubmit} noValidate>
 
           <div className="form-row">
             <div className="col-md-3 mb-3">
@@ -154,7 +146,7 @@ export default class ContactQRForm extends React.Component {
                 <div className="input-group-prepend">
                   <span className="input-group-text" id="inputGroupPrepend">@</span>
                 </div>
-                <input type="text" className="form-control" placeholder="star" name="twitter_handle" value={twitter_handle} onChange={this.handleChange} />
+                <input type="text" className="form-control" placeholder="blackstar" name="twitter_handle" value={twitter_handle} onChange={this.handleChange} />
               </div>
             </div>
             <div className="col-md-4 mb-3">
@@ -193,11 +185,11 @@ export default class ContactQRForm extends React.Component {
           </div>
 
           <button className="btn btn-primary" type="submit">Create QR Code</button>
-          {errorMsg}
         </form>
 
-        {qrCode}
-        {vCardRawText}
+        <VCardQRCode png_base64={png_base64} vcard_text={vcard_text} show={showData} />
+
+        <ErrorMessage text={error} show={showError} />
       </div>
     );
   }
