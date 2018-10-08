@@ -4,13 +4,7 @@ This project creates QR Codes for your contact information that can be read with
 
 The project was inspired by a friend who had one of these QR codes on their lock screen. This enabled people to simply scan the code instead of sending a text message to exchange contact info.
 
-Try it out via Docker:
-
-```sh
-docker run aphexddb/contactqr
-```
-
-And then visit [http://localhost:8080](http://localhost:8080).
+Visit [https://www.contactqr.me](https://www.contactqr.me) to see it in action.
 
 ## Releasing
 

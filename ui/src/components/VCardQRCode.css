@@ -1,21 +1,39 @@
 .vcard-qrcode-component {
-  display: flex;
-  align-items: center;
-  justify-content: left;
+  flex-direction: column;
+  align-self: flex-start;
   -webkit-transition: 0.5s;
   -moz-transition: 0.5s;
   -o-transition: 0.5s;
   transition: 0.5s;
   opacity: 0;
   visibility: hidden;
-  border: 1px solid #e6e6e6;
-  padding: 2px;
-  margin-top: 10px;
+  display: none;
 }
 .vcard-qrcode-component .qrcode {
-  align-self: flex-start;
+  justify-content: left;
 }
 .vcard-qrcode-component.show {
   opacity: 1;
   visibility: visible;
+  display: flex;
 }
+
+.vcard-qrcode-component .qrcode-wrapper {
+  flex-direction: row;
+  align-self: flex-start;
+  align-items: center;
+  display: flex;
+  margin-top: 10px;
+}
+.vcard-qrcode-component .qrcode-wrapper .instructions {
+  padding: 10px;
+}
+.vcard-qrcode-component .raw-data {
+  margin-top: 5px;
+}
+.vcard-qrcode-component .raw-data pre {
+  font-size: .8em;
+  background-color: rgb(216, 216, 216);
+  padding: 5px;
+}
+

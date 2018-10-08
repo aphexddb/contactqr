@@ -2,9 +2,8 @@ import React from 'react'
 import { Link } from 'gatsby'
 
 const Header = ({ siteTitle }) => (
-  <div
+  <div className="bg-primary"
     style={{
-      background: '#38a5fe',
       marginBottom: '1.45rem',
     }}
   >
@@ -12,14 +11,14 @@ const Header = ({ siteTitle }) => (
       style={{
         margin: '0 auto',
         maxWidth: 960,
-        padding: '1.45rem 1.0875rem',
+        padding: '.5em 1.0875rem',
       }}
     >
       <h1 style={{ margin: 0 }}>
         <Link
+          className="text-white"
           to="/"
           style={{
-            color: 'white',
             textDecoration: 'none',
           }}
         >

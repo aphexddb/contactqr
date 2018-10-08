@@ -10,10 +10,14 @@ module.exports = {
         name: 'gatsby-starter-default',
         short_name: 'starter',
         start_url: '/',
-        background_color: '#38a5fe',
-        theme_color: '#38a5fe',
-        display: 'minimal-ui',
         icon: 'src/images/favicon-contact.png', // This path is relative to the root of the site.
+      },
+    },
+    {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        trackingId: "UA-127078579-1",
+        head: true,
       },
     },
     'gatsby-plugin-offline',

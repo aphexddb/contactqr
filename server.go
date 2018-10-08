@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/gorilla/handlers"
@@ -53,10 +54,15 @@ func NewServer(staticPath, indexFile, port string) Server {
 	// catch-all: Serve all static HTML files
 	r.PathPrefix("/").HandlerFunc(StaticHTMLHandler(staticPath, indexFile)).Methods(http.MethodGet)
 
-	// handle CORS
+	// handle CORS for local dev
+	localDev := os.Getenv("LOCALDEV")
 	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type"})
-	originsOk := handlers.AllowedOrigins([]string{"*"})
+	originsOk := handlers.AllowedOrigins([]string{"contactqr.me"})
 	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"})
+	if len(localDev) > 0 {
+		log.Println("Running in local dev mode, allowing all CORS requests")
+		originsOk = handlers.AllowedOrigins([]string{"*"})
+	}
 
 	srv := &http.Server{
 		Addr:         fmt.Sprintf("0.0.0.0:%s", port),

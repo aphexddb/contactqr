@@ -1,0 +1,16 @@
+.create-another-button-component {
+  align-items: center;
+  justify-content: left;
+  opacity: 0;
+  visibility: hidden;
+  display: none;
+}
+.create-another-button-component.show {
+  display: flex;
+  opacity: 1;
+  visibility: visible;
+}
+
+.create-another-button-component .btn {
+  width: 100%;
+}

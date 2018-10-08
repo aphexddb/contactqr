@@ -3,6 +3,7 @@ import axios from 'axios';
 import './ContactQRForm.css';
 import VCardQRCode from './VCardQRCode';
 import ErrorMessage from './ErrorMessage';
+import CreateAnotherButton from './CreateAnotherButton';
 
 // parses response data into a VCardResponse
 function newVCardResponse(data) {
@@ -19,9 +20,13 @@ function newVCardResponse(data) {
 }
 
 export default class ContactQRForm extends React.Component {
-    constructor(props) {
+  constructor(props) {
     super(props);
-    this.state = {
+    this.state = this.getDefaultState();
+  };
+
+  getDefaultState = () => {
+    return {
       first: "",
       last: "",
       company_name: "",
@@ -39,8 +44,13 @@ export default class ContactQRForm extends React.Component {
       vcard_text: "",
       error: "",
       png_base64: "",
+      hide: false
     };
-  }
+  };
+
+  resetFormState = () => {
+    this.setState(this.getDefaultState());
+  };
 
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -51,12 +61,14 @@ export default class ContactQRForm extends React.Component {
     if (vCardResponse.success) {
       this.setState({vcard_text: vCardResponse.vcard_text});
       this.setState({png_base64: vCardResponse.png_base64});
+      this.setState({hide: true});
     } else {
       this.setState({error: vCardResponse.errors});
+      this.setState({hide: false});
     }
   };
 
-  onSubmit = (e) => {
+  onSubmit = e => {
     e.preventDefault();
     this.setState({vcard_text: ""});
     this.setState({error: ""});
@@ -91,7 +103,7 @@ export default class ContactQRForm extends React.Component {
   };
 
   render() {
-    const componentClasses = ['contactqr-form-component'];
+    const formClasses = ['contactqr-form-component'];
     const { first, last, company_name, title, email, cell_phone,
       street, city, state, postal_code, facebook_url, twitter_handle,
       url, note, vcard_text, error, png_base64 } = this.state;
@@ -106,11 +118,17 @@ export default class ContactQRForm extends React.Component {
     let showData = false;
     if (png_base64.length > 0) {
       showData = true;
+      formClasses.push('hide');
     }
 
     return (
-      <div className={componentClasses.join(' ')}>
-        <form name="contactQRForm" onSubmit={this.onSubmit} noValidate>
+      <div>
+
+        <p>
+          Make sharing your contact information easy. Create a QR code with your contact information that can be scanned with any phone, instead of sending someone a SMS when you meet them.
+        </p>
+
+        <form className={formClasses.join(' ')} name="contactQRForm" onSubmit={this.onSubmit} noValidate>
 
           <div className="form-row">
             <div className="col-md-3 mb-3">
@@ -184,12 +202,15 @@ export default class ContactQRForm extends React.Component {
             </div>
           </div>
 
-          <button className="btn btn-primary" type="submit">Create QR Code</button>
+          <ErrorMessage text={error} show={showError} />
+
+          <button className="btn btn-primary" type="submit">Create</button>
         </form>
+
+        <CreateAnotherButton onClickAction={this.resetFormState} show={showData} />
 
         <VCardQRCode png_base64={png_base64} vcard_text={vcard_text} show={showData} />
 
-        <ErrorMessage text={error} show={showError} />
       </div>
     );
   }

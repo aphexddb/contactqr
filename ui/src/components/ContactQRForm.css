@@ -1,6 +1,27 @@
 .contactqr-form-component {
+  opacity: 1;
+  visibility: visible;
   display: flex;
   flex-direction: column;
+  height: 100%;
+}
+.contactqr-form-component.hide {
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;
+  -o-transition: 0.5s;
+  transition: 0.5s;
+}
+.contactqr-form-component .reset {
   align-items: center;
   justify-content: left;
+  display: flex;
+}
+
+.reset-button {
+  align-items: center;
+  justify-content: left;
+  display: flex;
 }

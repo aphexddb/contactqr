@@ -5,8 +5,9 @@ ENTRYPOINT := cmd/contactqr/contactqr.go
 BINARY_NAME=contactqr
 PORT := 8080
 GOCMD=go
-GOBINDIR := $(GOPATH)/bin
-UIPATH := ./ui/public
+GOBIN_DIR := $(GOPATH)/bin
+UI_DIR := ./ui/public
+RELEASE_DIR := ./release
 
 all: test build
 
@@ -31,15 +32,16 @@ test:
 
 .PHONY: release
 release: release_ui
-	mkdir -p release
-	GOOS=$(RELEASE_OS) GOARCH=amd64 go build -o release/$(BINARY)-$(VERSION)-$(RELEASE_OS)-amd64 $(ENTRYPOINT)
+	rm -rf $(RELEASE_DIR)
+	mkdir -p $(RELEASE_DIR)
+	GOOS=$(RELEASE_OS) GOARCH=amd64 go build -o $(RELEASE_DIR)/$(BINARY)-$(VERSION)-$(RELEASE_OS)-amd64 $(ENTRYPOINT)
 
 .PHONY: dev
 dev:
 	mkdir -p build
 	go build -o build/$(BINARY)-dev $(ENTRYPOINT)
-	@echo "Expecting UI file path: $(UIPATH), run 'make build' in the ui directory to generate static files."
-	build/$(BINARY)-dev -path $(UIPATH)
+	@echo "Expecting UI file path: $(UI_DIR), run 'make build' in the ui directory to generate static files."
+	LOCALDEV=1 build/$(BINARY)-dev -path $(UI_DIR)
 
 .PHONY: docker_build
 docker_build:
