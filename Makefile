@@ -31,8 +31,7 @@ test:
 	$(GOCMD) test ./...
 
 .PHONY: release
-release: release_ui
-	rm -rf $(RELEASE_DIR)
+release: clean release_ui
 	mkdir -p $(RELEASE_DIR)
 	GOOS=$(RELEASE_OS) GOARCH=amd64 go build -o $(RELEASE_DIR)/$(BINARY)-$(VERSION)-$(RELEASE_OS)-amd64 $(ENTRYPOINT)
 
@@ -62,6 +61,7 @@ heroku_release:
 
 .PHONY: run
 run:
+	@echo "Running container $(BINARY):latest"
 	docker run --rm -it \
 		-p $(PORT):$(PORT)/tcp \
 		-e PORT=$(PORT) \
